@@ -1,0 +1,44 @@
+class Solution {
+    public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
+        int m=edges.length;
+        ArrayList<ArrayList<double[]>> adj =new ArrayList<>();
+        for(int i=0;i<n;i++){
+            adj.add(new ArrayList<>());
+        }
+        for(int i=0;i<m;i++){
+            int from=edges[i][0];
+            int to=edges[i][1];
+            double p=succProb[i];
+
+            adj.get(from).add(new double[]{to,p});
+            adj.get(to).add(new double[]{from,p});
+        }
+
+        double[] prob=new double[n];
+        PriorityQueue<double[]> pq =new PriorityQueue<>((a,b) -> Double.compare(b[1],a[1]));
+        prob[start]=1.0;
+        pq.offer(new double[]{start,1.0}); //{node,probability}
+
+        while(!pq.isEmpty()){
+            double[] curr=pq.poll();
+            int currnode=(int)curr[0];
+            double currpro=curr[1];
+            int sz=pq.size();
+
+            if(currnode == end){
+                return currpro;
+            }
+            for(double[] ele : adj.get(currnode)){
+                int nextnode= (int)ele[0];
+                double edgpro= ele[1];
+
+                double newpro= edgpro * currpro;
+                if(newpro > prob[nextnode]){
+                    prob[nextnode]=newpro;
+                    pq.offer(new double[]{nextnode,newpro});
+                }
+            } 
+        }
+        return 0.0;
+    }
+}
