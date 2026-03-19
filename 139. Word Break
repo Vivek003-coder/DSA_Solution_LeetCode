@@ -1,0 +1,38 @@
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        HashSet<String> set=new HashSet<>(wordDict);
+        boolean[] dp=new boolean[s.length()+1];
+        dp[0]=true;
+        for(int i=1;i<=s.length();i++){
+            for(int j=0;j<i;j++){
+                if(dp[j] && set.contains(s.substring(j, i))){
+                    dp[i]=true;
+                    break;
+                }
+            }
+        }
+        return dp[s.length()];
+    }
+}
+
+// memo
+// class Solution {
+//     public boolean wordBreak(String s, List<String> wordDict) {
+//         HashSet<String> set = new HashSet<>(wordDict);
+//         Boolean[] dp = new Boolean[s.length()];
+//         return dfs(s, 0, set, dp);
+//     }
+
+//     private boolean dfs(String s, int start, HashSet<String> set, Boolean[] dp) {
+//         if (start == s.length()) return true;
+
+//         if (dp[start] != null) return dp[start];
+
+//         for (int end = start + 1; end <= s.length(); end++){
+//             if (set.contains(s.substring(start, end)) && dfs(s, end, set, dp)){
+//                 return dp[start]=true;
+//             }
+//         }
+//         return dp[start]=false;
+//     }
+// }
