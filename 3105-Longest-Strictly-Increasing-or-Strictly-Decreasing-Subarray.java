@@ -16,7 +16,7 @@ class Solution {
                 ic=1;
                 dc=1;
             }
-            max=Math.max(ic,dc);
+            max=Math.max(max,Math.max(ic,dc));
         }
         return max;
 
